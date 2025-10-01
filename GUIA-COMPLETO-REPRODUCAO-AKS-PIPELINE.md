@@ -514,12 +514,57 @@ gh secret set AZURE_CREDENTIALS --body '{
 # 2. ARM_ACCESS_KEY (Storage Account para Terraform backend)
 gh secret set ARM_ACCESS_KEY --body "STORAGE_ACCESS_KEY_GERADO"
 
-## Adicionar TOKEN_GB para auto-PR creation
-# IMPORTANTE: Gere um Personal Access Token no GitHub:
-# 1. GitHub > Settings > Developer settings > Personal access tokens > Tokens (classic)
-# 2. Generate new token com escopo 'repo' e 'workflow'
-# 3. No repositório: Settings > Secrets and variables > Actions > New repository secret
-# 4. Name: TOKEN_GB, Secret: cole o token gerado
+# 3. TOKEN_GB será configurado na próxima seção
+```
+
+### 6.1.1 Criar Personal Access Token (TOKEN_GB)
+
+**PASSO-A-PASSO DETALHADO:**
+
+1. **Acessar configurações do GitHub:**
+   - Vá para https://github.com
+   - Clique no seu **avatar** (canto superior direito)
+   - Clique em **"Settings"**
+
+2. **Navegar para tokens:**
+   - No menu lateral esquerdo, vá para **"Developer settings"**
+   - Clique em **"Personal access tokens"**
+   - Clique em **"Tokens (classic)"**
+
+3. **Criar novo token:**
+   - Clique em **"Generate new token"**
+   - Selecione **"Generate new token (classic)"**
+
+4. **Configurar o token:**
+   - **Note**: `AKS Pipeline Auto PR Creation`
+   - **Expiration**: `No expiration` (ou 1 ano)
+   - **Scopes** - MARQUE OBRIGATORIAMENTE:
+     - ✅ **repo** (Full control of private repositories)
+       - ✅ repo:status
+       - ✅ repo_deployment
+       - ✅ public_repo
+       - ✅ repo:invite
+       - ✅ security_events
+     - ✅ **workflow** (Update GitHub Action workflows)
+     - ✅ **write:packages** (Upload packages to GitHub Package Registry)
+     - ✅ **read:packages** (Download packages from GitHub Package Registry)
+
+5. **Gerar e copiar:**
+   - Clique em **"Generate token"**
+   - **COPIE O TOKEN IMEDIATAMENTE** (só aparece uma vez)
+   - Token formato: `ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
+
+6. **Adicionar ao repositório:**
+   - Vá para seu repositório
+   - **Settings** > **Secrets and variables** > **Actions**
+   - Clique **"New repository secret"**
+   - **Name**: `TOKEN_GB`
+   - **Secret**: Cole o token copiado
+   - Clique **"Add secret"**
+
+```bash
+# Agora configure via CLI se preferir
+gh secret set TOKEN_GB --body "ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
 ### 6.2 Verificar Secrets Configurados (Interface Web)
