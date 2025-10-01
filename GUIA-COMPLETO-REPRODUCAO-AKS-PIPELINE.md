@@ -313,6 +313,49 @@ git commit -m "Initial commit: AKS CI/CD Pipeline setup
 git push origin main
 ```
 
+### 3.6 Criar Branches Necessárias
+
+A pipeline funciona com 4 branches específicas. Vamos criá-las:
+
+```bash
+# Certificar que estamos na main
+git checkout main
+
+# Criar branch develop (para ambiente DEV)
+git checkout -b develop
+git push origin develop
+
+# Criar branch homologacao (para ambiente HML)
+git checkout -b homologacao
+git push origin homologacao
+
+# Voltar para main
+git checkout main
+
+# Verificar branches criadas
+git branch -a
+```
+
+**Branches esperadas:**
+```
+* main                    # Produção (PROD)
+  develop                 # Desenvolvimento (DEV)
+  homologacao            # Homologação (HML)
+  remotes/origin/develop
+  remotes/origin/homologacao
+  remotes/origin/main
+```
+
+### 3.7 Configurar Branch Protection (Opcional)
+
+**Via GitHub Web:**
+1. Vá para **Settings** > **Branches**
+2. **Add rule** para `main`:
+   - Require pull request reviews before merging
+   - Require status checks to pass before merging
+3. **Add rule** para `develop`:
+   - Require status checks to pass before merging
+
 ** CHECKPOINT 3**: Novo repositório criado e configurado
 
 ---
@@ -504,9 +547,27 @@ TOKEN_GB               Updated 2024-01-XX
 
 ## 7. Teste dos Workflows
 
-### 7.1 Teste do Workflow de Feature
+### 7.1 Entendendo o Fluxo das Branches
+
+**Fluxo completo da pipeline:**
+```
+feature/* → develop → homologacao → main
+   ↓           ↓            ↓        ↓
+ Validate    DEV         HML      PROD
+```
+
+**Workflow por branch:**
+- **feature/**: Executa `00-feature.yml` (validação + cria PR para develop)
+- **develop**: Executa `01-develop.yml` (deploy DEV + cria PR para homologacao)
+- **homologacao**: Executa `02-homologacao.yml` (deploy HML + cria PR para main)
+- **main**: Executa `03-main.yml` (deploy PROD + auto-merge)
+
+### 7.2 Teste do Workflow de Feature
 
 ```bash
+# Certificar que estamos na main
+git checkout main
+
 # Criar branch de feature
 git checkout -b feature/teste-inicial
 
@@ -519,7 +580,7 @@ git commit -m "feat: initial pipeline test"
 git push origin feature/teste-inicial
 ```
 
-### 7.2 Verificar Execução do Workflow (Interface Web)
+### 7.3 Verificar Execução do Workflow (Interface Web)
 
 **Acompanhar via GitHub:**
 1. Vá para seu repositório no GitHub
@@ -527,7 +588,7 @@ git push origin feature/teste-inicial
 3. Você verá o workflow **"Feature Branch Validation and PR Creation"** em execução
 4. Clique no workflow para ver os logs detalhados
 
-### 7.3 Acompanhar Logs do Workflow
+### 7.4 Acompanhar Logs do Workflow
 
 **Via GitHub Web:**
 1. Na aba **Actions**, clique no workflow em execução
@@ -537,24 +598,26 @@ git push origin feature/teste-inicial
    - Terraform Validation
    - Security and Quality Checks
 
-### 7.4 Merge para Develop
+### 7.5 Merge para Develop
 
-Após validação bem-sucedida:
+Após validação bem-sucedida, o workflow automaticamente criará um **Pull Request** para develop. Para continuar:
 
+**Via GitHub Web:**
+1. Vá para **Pull requests**
+2. Você verá um PR: **"Auto-promote: feature/teste-inicial to DEV"**
+3. **Review** e **Merge** o Pull Request
+
+**OU via linha de comando:**
 ```bash
-# Voltar para main
-git checkout main
-
-# Criar e trocar para develop
-git checkout -b develop
-git push origin develop
+# Trocar para develop
+git checkout develop
 
 # Fazer merge da feature
 git merge feature/teste-inicial
 git push origin develop
 ```
 
-### 7.5 Verificar Deploy para DEV
+### 7.6 Verificar Deploy para DEV
 
 **Acompanhar via GitHub Web:**
 1. Vá para seu repositório no GitHub
