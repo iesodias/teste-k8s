@@ -514,7 +514,7 @@ gh secret set AZURE_CREDENTIALS --body '{
 # 2. ARM_ACCESS_KEY (Storage Account para Terraform backend)
 gh secret set ARM_ACCESS_KEY --body "STORAGE_ACCESS_KEY_GERADO"
 
-# Adicionar TOKEN_GB para auto-PR creation
+## Adicionar TOKEN_GB para auto-PR creation
 # IMPORTANTE: Gere um Personal Access Token no GitHub:
 # 1. GitHub > Settings > Developer settings > Personal access tokens > Tokens (classic)
 # 2. Generate new token com escopo 'repo' e 'workflow'
