@@ -1,4 +1,4 @@
-name: HML Deploy and Promote to PROD
+name: 03 Hml Deploy and Promote to Prod
 
 on:
   push:

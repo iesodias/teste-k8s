@@ -124,6 +124,8 @@ E configure os secrets necessários no GitHub:
 └── README.md
 ```
 
-## Status dos Workflows
+##### Status dos Workflows
 
 Verifique o status dos workflows na aba **Actions** do repositório GitHub.
+
+<!-- trigger pipeline -->
