@@ -1,4 +1,4 @@
-name: DEV Deploy and Promote to HML
+name: 02 Dev Deploy and Promote to Hml
 
 on:
   push:

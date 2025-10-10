@@ -1,4 +1,4 @@
-name: Feature Branch Validation and PR Creation
+name: 01 Validation and PR Creation
 
 on:
   push:
