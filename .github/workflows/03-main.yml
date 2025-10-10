@@ -1,4 +1,4 @@
-name: PRODUCTION Deploy (Deploy First, Merge After)
+name: 04 Prd Deploy and Auto-Merge PR
 
 on:
   pull_request:
